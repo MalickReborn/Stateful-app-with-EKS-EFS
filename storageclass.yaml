@@ -1,0 +1,25 @@
+---
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: myconfig
+  namespace: default
+data:
+  efsmountid: ${efsmountid}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: my_efs-sc
+provisioner: efs.csi.aws.com
+parameters:
+  provisioningMode: efs-ap
+  fileSystemId: efsmountid
+  directoryPerms: "700"
+  gidRangeStart: "1000" # optional
+  gidRangeEnd: "2000" # optional
+  basePath: "/dynamic_provisioning" # optional
+---
+
+
